@@ -13400,6 +13400,12 @@ module.filter('px', function() {
           aggregate_min: 'Для группы: Минимум',
           aggregate_avg: 'Для группы: Среднее',
           aggregate_remove: 'Для группы: Пусто'
+        },
+        validate: {
+          error: 'Ошибка:',
+          minLength: 'Значение должно содержать по крайней мере THRESHOLD символов.',
+          maxLength: 'Значение должно содержать не больше THRESHOLD символов.',
+          required: 'Ячейка обязательна для заполнения'
         }
       });
       return $delegate;
@@ -27429,10 +27435,10 @@ module.filter('px', function() {
        */
       runValidators: function(rowEntity, colDef, newValue, oldValue, grid) {
         
-        if (newValue === oldValue) {
+/*        if (newValue === oldValue) {
           // If the value has not changed we perform no validation
           return;
-        }
+        }*/
         
         if (typeof(colDef.name) === 'undefined' || !colDef.name) {
           throw new Error('colDef.name is required to perform validation');
