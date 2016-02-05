@@ -27464,9 +27464,8 @@ module.filter('px', function() {
           var validatorFunction = service.getValidator(validatorName, colDef.validators[validatorName]);
           // We pass the arguments as oldValue, newValue so they are in the same order 
           // as ng-model validators (modelValue, viewValue)
-          $q.when(validatorFunction(oldValue, newValue, rowEntity, colDef))
-            .then(validateClosureFactory(rowEntity, colDef, validatorName)
-          );
+          var isValid = validatorFunction(oldValue, newValue, rowEntity, colDef);
+          validateClosureFactory(rowEntity, colDef, validatorName)(isValid);
         }
       },
 
@@ -27909,7 +27908,7 @@ angular.module('ui.grid').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('ui-grid/cellTooltipValidator',
-    "<div class=\"ui-grid-cell-contents\" ng-class=\"{invalid:grid.validate.isInvalid(row.entity,col.colDef)}\" tooltip-html-unsafe=\"{{grid.validate.getFormattedErrors(row.entity,col.colDef)}}\" tooltip-enable=\"grid.validate.isInvalid(row.entity,col.colDef)\" tooltip-append-to-body=\"true\" tooltip-placement=\"top\" title=\"TOOLTIP\">{{COL_FIELD CUSTOM_FILTERS}}</div>"
+    "<div class=\"ui-grid-cell-contents\" ng-class=\"{invalid:grid.validate.isInvalid(row.entity,col.colDef)}\" tooltip-html=\"{{grid.validate.getFormattedErrors(row.entity,col.colDef)}}\" tooltip-enable=\"grid.validate.isInvalid(row.entity,col.colDef)\" tooltip-append-to-body=\"true\" tooltip-placement=\"top\" title=\"TOOLTIP\">{{COL_FIELD CUSTOM_FILTERS}}</div>"
   );
 
 }]);
