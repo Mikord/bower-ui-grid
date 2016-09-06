@@ -1,5 +1,5 @@
 /*!
- * ui-grid - v3.1.0 - 2016-01-19
+ * ui-grid - v3.1.0-cg1 - 2016-01-19
  * Copyright (c) 2016 ; License: MIT 
  */
 
@@ -10459,6 +10459,7 @@ function getLineHeight(elm) {
 
 var uid = ['0', '0', '0', '0'];
 var uidPrefix = 'uiGrid-';
+var scrollbarWidth;
 
 /**
  *  @ngdoc service
@@ -10756,6 +10757,7 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
 
     // Thanks to http://stackoverflow.com/a/13382873/888165
     getScrollbarWidth: function() {
+      if (scrollbarWidth === undefined) {
         var outer = document.createElement("div");
         outer.style.visibility = "hidden";
         outer.style.width = "100px";
@@ -10777,7 +10779,10 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
         // remove divs
         outer.parentNode.removeChild(outer);
 
-        return widthNoScroll - widthWithScroll;
+        scrollbarWidth = widthNoScroll - widthWithScroll;
+      }
+
+      return scrollbarWidth;
     },
 
     swap: function( elem, options, callback, args ) {
@@ -10785,17 +10790,13 @@ module.service('gridUtil', ['$log', '$window', '$document', '$http', '$templateC
               old = {};
 
       // Remember the old values, and insert the new ones
-      for ( name in options ) {
-        old[ name ] = elem.style[ name ];
-        elem.style[ name ] = options[ name ];
-      }
+      $.extend(old, options);
+      $(elem).css(options);
 
       ret = callback.apply( elem, args || [] );
 
       // Revert the old values
-      for ( name in options ) {
-        elem.style[ name ] = old[ name ];
-      }
+      $(elem).css(old);
 
       return ret;
     },
